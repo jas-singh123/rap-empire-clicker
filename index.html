@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rap Empire Clicker</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto&display=swap');
+
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #f0f0f0;
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 5px;
+      text-shadow: 0 0 10px #1DB954, 0 0 20px #1DB954;
+    }
+
+    h2, h3 {
+      color: #a3d9a5;
+      text-shadow: 0 0 5px #1DB954;
+      margin: 10px 0 5px 0;
+    }
+
+    button {
+      background: #1DB954;
+      border: none;
+      border-radius: 12px;
+      padding: 15px 30px;
+      margin: 10px 5px;
+      font-size: 18px;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 10px #1DB954;
+      transition: all 0.3s ease;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      user-select: none;
+      min-width: 180px;
+    }
+
+    button:hover {
+      background: #14833b;
+      box-shadow: 0 0 20px #1DB954, 0 0 40px #1DB954;
+      transform: scale(1.05);
+    }
+
+    button:active {
+      transform: scale(0.95);
+      box-shadow: 0 0 5px #0e6625;
+    }
+
+    textarea {
+      width: 90%;
+      max-width: 400px;
+      padding: 10px;
+      border-radius: 12px;
+      border: none;
+      font-size: 16px;
+      resize: vertical;
+      font-family: 'Roboto', sans-serif;
+      box-shadow: 0 0 8px #1DB954;
+      margin-bottom: 10px;
+      background: #122922;
+      color: #c7f0b0;
+    }
+
+    .container {
+      max-width: 420px;
+      width: 95%;
+      background: rgba(0,0,0,0.5);
+      border-radius: 20px;
+      padding: 25px 20px 30px 20px;
+      box-shadow: 0 0 30px rgba(29,185,84,0.8);
+      margin-bottom: 25px;
+    }
+
+    .upgrade, .merch {
+      background: #173723;
+      border-radius: 15px;
+      padding: 15px 20px;
+      margin: 15px 0;
+      box-shadow: inset 0 0 15px #1DB954aa;
+      text-align: center;
+    }
+
+    p {
+      margin: 8px 0;
+      font-weight: 500;
+      color: #b2f1a3;
+      text-shadow: 0 0 3px #1DB954cc;
+    }
+
+    #bars, #goldenBars, #bps, #ghostwriter-count, #studio-count, #kendrick-count, #merch-count {
+      font-weight: 800;
+      color: #e0ffdb;
+      text-shadow: 0 0 5px #22cc44;
+    }
+
+    audio {
+      display: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      button {
+        min-width: 140px;
+        font-size: 16px;
+        padding: 12px 20px;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      textarea {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎤 Rap Empire Clicker</h1>
+  <h2>BARS: <span id="bars">0</span> | GOLDEN BARS: <span id="goldenBars">0</span></h2>
+  <button onclick="dropBar()">Drop a Bar 🎶</button>
+  <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3d80868168.mp3?filename=click-124467.mp3"></audio>
+
+  <div class="container">
+    <div class="upgrade">
+      <h3>Ghostwriter 🧠 - Cost: 50 Bars</h3>
+      <button onclick="buyUpgrade('ghostwriter')">Hire Ghostwriter</button>
+      <p>+1 bar/sec | Owned: <span id="ghostwriter-count">0</span></p>
+    </div>
+
+    <div class="upgrade">
+      <h3>Studio 🎧 - Cost: 250 Bars</h3>
+      <button onclick="buyUpgrade('studio')">Buy Studio</button>
+      <p>+5 bars/sec | Owned: <span id="studio-count">0</span></p>
+    </div>
+
+    <div class="upgrade">
+      <h3>Kendrick Feature 🔥 - Cost: 1000 Bars</h3>
+      <button onclick="buyUpgrade('kendrick')">Feature Kendrick</button>
+      <p>+20 bar/sec | Owned: <span id="kendrick-count">0</span></p>
+    </div>
+
+    <div class="merch">
+      <h3>Merch Store 🧢</h3>
+      <button onclick="buyMerch()">Buy “Rap God” Hoodie – Cost: 5 Golden Bars</button>
+      <p>Owned: <span id="merch-count">0</span></p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="upgrade">
+      <h2>🎤 RAP BATTLE MODE</h2>
+      <p>Type your best bar and battle the AI.</p>
+      <textarea id="playerRap" rows="3" cols="40" placeholder="Type your bar..."></textarea><br>
+      <button onclick="rapBattle()">🔥 Battle AI</button>
+
+      <h3>AI’s Bar:</h3>
+      <p id="aiBar">🤖 Waiting for battle...</p>
+
+      <h3>Who Won?</h3>
+      <button onclick="declareWinner('player')">I WON 💪</button>
+      <button onclick="declareWinner('ai')">AI WON 🤖</button>
+    </div>
+
+    <h3>Auto Bars/sec: <span id="bps">0</span></h3>
+  </div>
+
+  <script>
+    // -- JS code remains the same as before --
+    let bars = parseInt(localStorage.getItem('bars')) || 0;
+    let goldenBars = parseInt(localStorage.getItem('goldenBars')) || 0;
+    let merch = parseInt(localStorage.getItem('merch')) || 0;
+
+    let upgrades = JSON.parse(localStorage.getItem('upgrades')) || {
+      ghostwriter: { count: 0, cost: 50, bps: 1 },
+      studio: { count: 0, cost: 250, bps: 5 },
+      kendrick: { count: 0, cost: 1000, bps: 20 }
+    };
+
+    const clickSound = document.getElementById("clickSound");
+
+    function dropBar() {
+      bars += 1;
+
+      if (Math.random() < 0.05) {
+        goldenBars += 1;
+        alert("💎 You dropped a GOLDEN bar!");
+      }
+
+      clickSound.play();
+      updateDisplay();
+      saveProgress();
+    }
+
+    function buyUpgrade(type) {
+      let upgrade = upgrades[type];
+      if (bars >= upgrade.cost) {
+        bars -= upgrade.cost;
+        upgrade.count += 1;
+        updateDisplay();
+        saveProgress();
+      } else {
+        alert("Not enough bars!");
+      }
+    }
+
+    function buyMerch() {
+      if (goldenBars >= 5) {
+        goldenBars -= 5;
+        merch += 1;
+        alert("🧢 You copped a ‘Rap God’ Hoodie!");
+        updateDisplay();
+        saveProgress();
+      } else {
+        alert("Not enough golden bars!");
+      }
+    }
+
+    function calculateBPS() {
+      let total = 0;
+      for (let key in upgrades) {
+        total += upgrades[key].count * upgrades[key].bps;
+      }
+      return total;
+    }
+
+    function updateDisplay() {
+      document.getElementById("bars").innerText = bars;
+      document.getElementById("goldenBars").innerText = goldenBars;
+      document.getElementById("bps").innerText = calculateBPS();
+      document.getElementById("ghostwriter-count").innerText = upgrades.ghostwriter.count;
+      document.getElementById("studio-count").innerText = upgrades.studio.count;
+      document.getElementById("kendrick-count").innerText = upgrades.kendrick.count;
+      document.getElementById("merch-count").innerText = merch;
+    }
+
+    function saveProgress() {
+      localStorage.setItem('bars', bars);
+      localStorage.setItem('goldenBars', goldenBars);
+      localStorage.setItem('merch', merch);
+      localStorage.setItem('upgrades', JSON.stringify(upgrades));
+    }
+
+    setInterval(() => {
+      bars += calculateBPS();
+      updateDisplay();
+      saveProgress();
+    }, 1000);
+
+    const aiBars = [
+      "I spit code like fire, leave your game in smoke.",
+      "You're clicking for bars? I'm breaking the mold, no joke.",
+      "My rhymes got rhythm, your beat’s a mess.",
+      "I generate gold while you just guess.",
+      "I'm the future of rap, AI with a plan,",
+      "You tryna spit heat? I'm a lyrical fan!"
+    ];
+
+    function rapBattle() {
+      const playerBar = document.getElementById("playerRap").value.trim();
+      if (playerBar.length === 0) {
+        alert("Type your bar first!");
+        return;
+      }
+      const randomBar = aiBars[Math.floor(Math.random() * aiBars.length)];
+      document.getElementById("aiBar").innerText = randomBar;
+    }
+
+    function declareWinner(winner) {
+      if (winner === 'player') {
+        bars += 25;
+        goldenBars += 1;
+        alert("🔥 You bodied the AI! +25 Bars, +1 Golden Bar");
+      } else {
+        alert("🤖 AI clapped back harder... Try again!");
+      }
+      updateDisplay();
+      saveProgress();
+    }
+
+    updateDisplay();
+  </script>
+
+</body>
+</html>
