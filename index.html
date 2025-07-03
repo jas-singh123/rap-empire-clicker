@@ -120,6 +120,9 @@
       <div class="upgrade" id="ghostwriter">✍️ Ghostwriter (Cost: 50)</div>
       <div class="upgrade" id="studio">🏢 Studio (Cost: 150)</div>
       <div class="upgrade" id="feature">🌟 Kendrick Feature (Cost: 500)</div>
+      <div class="upgrade" id="savage">🔫 21 Savage (Cost: 30000)</div>
+      <div class="upgrade" id="drake">🦉 Drake (Cost: 60000)</div>
+      <div class="upgrade" id="eminem">🎤 Eminem (Cost: 100000)</div>
     </div>
   </div>
 
@@ -130,19 +133,25 @@
     const upgrades = [
       { id: 'ghostwriter', cost: 50 },
       { id: 'studio', cost: 150 },
-      { id: 'feature', cost: 500 }
+      { id: 'feature', cost: 500 },
+      { id: 'savage', cost: 30000, lyrics: '"Bank Account" 🔥' },
+      { id: 'drake', cost: 60000, lyrics: '"Started from the Bottom" 🎶' },
+      { id: 'eminem', cost: 100000, lyrics: '"Lose Yourself" 💯' }
     ];
+
+    let unlockedArtists = [];
 
     clickButton.onclick = () => {
       bars++;
       updateDisplay();
+      playLyrics();
     };
 
     function updateDisplay() {
       barCount.textContent = `Bars: ${bars}`;
       upgrades.forEach(upg => {
         const el = document.getElementById(upg.id);
-        if (bars >= upg.cost) {
+        if (bars >= upg.cost && !unlockedArtists.includes(upg.id)) {
           el.classList.add('enabled');
         } else {
           el.classList.remove('enabled');
@@ -150,11 +159,27 @@
       });
     }
 
+    function playLyrics() {
+      for (let id of unlockedArtists) {
+        const upg = upgrades.find(u => u.id === id);
+        if (upg && upg.lyrics) {
+          const span = document.createElement('span');
+          span.textContent = upg.lyrics;
+          span.style.display = 'block';
+          span.style.fontSize = '16px';
+          span.style.marginTop = '8px';
+          barCount.appendChild(span);
+          setTimeout(() => span.remove(), 2000);
+        }
+      }
+    }
+
     upgrades.forEach(upg => {
       const el = document.getElementById(upg.id);
       el.onclick = () => {
-        if (bars >= upg.cost) {
+        if (bars >= upg.cost && !unlockedArtists.includes(upg.id)) {
           bars -= upg.cost;
+          unlockedArtists.push(upg.id);
           alert(`${upg.id.replace(/^[a-z]/, c => c.toUpperCase())} unlocked!`);
           updateDisplay();
         }
