@@ -7,63 +7,104 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #0f0f0f;
-      color: white;
+      background-color: #121212;
+      color: #fff;
+      margin: 0;
+      padding: 40px;
       display: flex;
       justify-content: center;
-      padding: 40px;
+      align-items: flex-start;
+      min-height: 100vh;
     }
+
     .container {
       display: flex;
-      gap: 40px;
+      gap: 50px;
+      max-width: 1200px;
+      width: 100%;
     }
+
     .main {
+      flex: 1;
       text-align: center;
     }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
     #click-button {
-      font-size: 30px;
-      padding: 30px 60px;
+      font-size: 32px;
+      padding: 35px 70px;
       margin: 20px 0;
       background-color: #1db954;
       border: none;
       border-radius: 15px;
       color: white;
       cursor: pointer;
-      transition: transform 0.1s;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+      transition: all 0.15s ease-in-out;
     }
+
+    #click-button:hover {
+      background-color: #17a74f;
+    }
+
     #click-button:active {
-      transform: scale(0.95);
+      transform: scale(0.97);
     }
+
     #bar-count {
-      font-size: 26px;
-      margin-top: 10px;
+      font-size: 24px;
+      margin-top: 15px;
     }
-    .upgrades {
-      width: 200px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .upgrade {
-      background-color: gray;
-      padding: 10px;
-      border-radius: 10px;
-      text-align: left;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    .upgrade.enabled {
-      background-color: #ffffff20;
-    }
+
     #rap-battle-button {
-      margin-top: 20px;
-      padding: 10px 30px;
-      background-color: crimson;
+      margin-top: 25px;
+      padding: 14px 40px;
+      background-color: #e50914;
       color: white;
+      font-size: 18px;
       font-weight: bold;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
+      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+      transition: all 0.15s ease-in-out;
+    }
+
+    #rap-battle-button:hover {
+      background-color: #c20711;
+    }
+
+    .upgrades {
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .upgrade {
+      background-color: #444;
+      padding: 14px 18px;
+      border-radius: 10px;
+      cursor: not-allowed;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+      opacity: 0.6;
+      transition: background-color 0.2s, opacity 0.2s, transform 0.1s;
+    }
+
+    .upgrade.enabled {
+      background-color: #2c2c2c;
+      cursor: pointer;
+      opacity: 1;
+      box-shadow: 0 5px 12px rgba(0, 255, 100, 0.4);
+    }
+
+    .upgrade.enabled:hover {
+      background-color: #3a3a3a;
+      transform: scale(1.02);
     }
   </style>
 </head>
